@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Text Editor</title>
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css"
+        integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/regular.min.css"
+        integrity="sha512-j+P0XpTXw+hDTK64xqC/cjv62cf629/IR4/0bokmich7J8XdVlWT40+1M/Z58rCQ4F+3QoJIfzh6Ui6TTIP6WQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/regular.min.css"
+        integrity="sha512-j+P0XpTXw+hDTK64xqC/cjv62cf629/IR4/0bokmich7J8XdVlWT40+1M/Z58rCQ4F+3QoJIfzh6Ui6TTIP6WQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css"
+        integrity="sha512-/r+0SvLvMMSIf41xiuy19aNkXxI+3zb/BN8K9lnDDWI09VM0dwgTMzK7Qi5vv5macJ3VH4XZXr60ip7v13QnmQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <h5>werwer we</h5>
+    <div   style="width: 1000px;" id="fullTextEditor">
+
+        <div class="flex bg-gray-100 items-center   flex space-x-2 hideonprint" id='toolbar'>
+            <!-- format -->
+
+
+            <div class=" items-center  border-1   b g-gray-200 rounded cursor-pointer">
+                <div class="relative inline-block text-left group z-10 border-0 w-full  ">
+                    <div class="w-full flex rounded-md">
+                        <button type="button"
+                            class="inline-flex justify-start border-none w-full rounded-md border shadow-sm text-sm font -medium"
+                            id="menu-button" aria-expanded="true" aria-haspopup="true">
+                            <div class="py-1 w border-1 w-full text-start in flex flex-wrap"><span
+                                    class="cursor-pointer z-10 ml-1 my-1 rounded-full text-center text-sm font-bold text-gray-600">View</span>
+                            </div>
+                        </button>
+                        <div class="items-center justify-end absolute inset-y-0 right-2 flex"><svg
+                                class="-mr-1 inline-flex justify-end ml-2  bg-gray-300 rounded-full"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg></div>
+                    </div>
+                    <div
+                        class="hidden absolute group-hover:block  mt-0 w-[12vw] text-sm  rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                        <div class="" role="none">
+                            <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer" onclick="previewAndPrint(true)">
+                                <i class="fa fa-1x fa-print px-2"></i><strong class="px-3">Print</strong>
+                            </div>
+                            <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer">
+                                <i class="fa fa-1x fa-eye px-2"></i><strong class="px-3" onclick="previewAndPrint(false)">Preview</strong>
+                            </div>
+                            <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer" id="fullscreenButton">
+                                <i class="fa fa-1x fa-expand-alt px-2"></i><strong class="px-3">Fullscreen</strong>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" items-center  border-1   b g-gray-200 rounded cursor-pointer">
+                <div class="relative inline-block text-left group z-10 border-0 w-full  ">
+                    <div class="w-full flex rounded-md">
+                        <button type="button"
+                            class="inline-flex justify-start border-none w-full rounded-md border shadow-sm text-sm font -medium"
+                            id="menu-button" aria-expanded="true" aria-haspopup="true">
+                            <div class="py-1 w border-1 w-full text-start in flex flex-wrap"><span
+                                    class="cursor-pointer z-10 ml-1 my-1 rounded-full text-center text-sm font-bold text-gray-600">Format</span>
+                            </div>
+                        </button>
+                        <div class="items-center justify-end absolute inset-y-0 right-2 flex"><svg
+                                class="-mr-1 inline-flex justify-end ml-2  bg-gray-300 rounded-full"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg></div>
+                    </div>
+                    <div
+                        class="hidden absolute group-hover:block  mt-0 w-[12vw] text-sm  rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                        <div class="" role="none">
+                            <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer text-md"
+                                onclick="insertElementAtCursor()">
+                                <i class="fa fa-1x fa-bold px-2"></i><bold class="px-3">Bold</bold>
+                            </div>
+                            <div onclick="insertElementAtCursor('i','**italic text **')"
+                                class="hover:bg-gray-200 elemeSet rounded cursor-pointer text-md">
+                                <i class="fa fa-1x fa-italic px-2"></i><i class="px-3">italic</i>
+                            </div>
+                            <div onclick="insertElementAtCursor('u','**underLine text **')"
+                                class="hover:bg-gray-200 elemeSet rounded cursor-pointer text-md">
+                                <i class="fa fa-1x fa-underline px-2"></i><u class="px-3">underline</u>
+                            </div>
+                            <div onclick="insertElementAtCursor('s','**underLine text**')"
+                                class="hover:bg-gray-200 elemeSet rounded cursor-pointer text-md">
+                                <i class="fa fa-1x fa-strikethrough px-2"></i><del class="px-3">strike</del>
+                            </div>
+                            <div onclick="insertElementAtCursor('sup','**supperScript**')"
+                                class="hover:bg-gray-200 elemeSet rounded cursor-pointer text-md">
+                                <i class="fa fa-1x fa-superscript px-2"></i><sup class="px-3">superscript</sup>
+                            </div>
+                            <div onclick="insertElementAtCursor('sub','**supperScript**')"
+                                class="hover:bg-gray-200 elemeSet rounded cursor-pointer text-md">
+                                <i class="fa fa-1x fa-subscript px-2"></i><sub class="px-3">subscript</sub>
+                            </div>
+                            <div onclick="insertElementAtCursor('summary','**Summary**')"
+                                class="hover:bg-gray-200 elemeSet rounded cursor-pointer text-md">
+                                <i class="fa-solid fa-list px-2"></i><Summary class="px-3">Summary</Summary>
+                            </div>
+
+
+
+                            <div class="flex   m-1 m-3   b g-gray-200 rounded cursor-pointer  ">
+                                <input list="fontSizes" onchange="styleElementIncluder('fontSize',this.value,'px')" placeholder="Size " class="p-1 border rounded w-[6vw] h-[3vh]">
+                                <datalist id="fontSizes"></datalist>
+                            </div>
+                            <div class="f lex  m-1 m-3    b g-gray-200 rounded cursor-pointer">
+                                <input list="headers" placeholder="Header" class="p-1 border rounded w-[6vw] h-[3vh] ">
+                                <datalist id="headers"></datalist>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- \\\\ insert -->
+            <div class="flex items-center  border-1   b g-gray-200 rounded cursor-pointer">
+                <div class="relative inline-block text-left group z-10 border-0 w-full  ">
+                    <div class="w-full flex rounded-md">
+                        <button type="button"
+                            class="inline-flex justify-start border-none w-full rounded-md border shadow-sm text-sm font -medium"
+                            id="menu-button" aria-expanded="true" aria-haspopup="true">
+                            <div class="py-1 w border-1 w-full text-start in flex flex-wrap"><span
+                                    class="cursor-pointer z-10 ml-1 my-1 rounded-full text-center text-sm font-bold text-gray-600">Insert</span>
+                            </div>
+                        </button>
+                        <div class="items-center justify-end absolute inset-y-0 right-2 flex"><svg
+                                class="-mr-1 inline-flex justify-end ml-2  bg-gray-300 rounded-full"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg></div>
+                    </div>
+                    <div
+                        class="hidden absolute group-hover:block  mt-0 w-[12vw] text-sm  rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                        <div class="" role="none">
+
+                            <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer">
+                                <i class="fa fa-1x fa-image px-2"></i><label for="pom43546535435445Image" class="px-3">Image</label>
+                                <input type="file" hidden  id="pom43546535435445Image" accept="image/*" multiple onchange="onChange(event)" />
+
+                            </div>
+                            <!-- e,element='span',elementToCreate='input',type='datetime-local',cssStyle={},attributes=[]-->
+                            <!-- <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer" onclick="openInputToFeed(this,'a','links',{},[{key:''}])">
+                                <i class="fa fa-1x fa-link px-2"></i><a class="px-3">Links</a>
+                            </div> -->
+                            <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer" onclick="openInputToFeed(this,'a','links',{},{href:'',id:'pom-editor-anchor-tag',style:`text-decoration: underline;cursor: pointer`})">
+                                <i class="fa fa-1x fa-anchor px-2"></i><span class="px-3">Anchor</span>
+                            </div>
+                            <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer p-2" onclick="openInputToFeed(this)" >
+                                <i class="fa fa-calendar-alt fa-1x "></i>
+                                <span class="px-3">Date/time</span>
+                              
+                            </div>
+
+
+
+                            <div>
+                                <div class=" text-center w-full   py-1 bg-gray-100 font-bold">Table</div>
+                              
+                                <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer" onclick="removeAllTables()">
+                                    <i class="fa fa-1x fa-trash-can px-2"></i><span class="px-3">Delete All
+                                        table</span>
+                                </div>
+
+
+
+
+                                <div class="table-picker-wrapper">
+                                    <div class="table-picker-trigger">
+                                        <i class="fa fa-1x fa-table px-2"></i><strong class="px-3">Create</strong>
+                                    </div>
+                                    <div id="table-picker-container" class="table-picker-container hidden">
+                                        <div id="table-picker-grid" class="table-picker-grid"></div>
+                                        <span id="table-dimensions" class="table-dimensions">0 x 0</span>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+
+
+                            <!--  -->
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- side -->
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <button
+                   
+                    style="flex: 1; margin: 0 4px; width: auto;">
+                    <span  >
+                        <svg width="24" height="24" focusable="false">
+                            <path
+                                d="M5 5h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Zm0 4h8c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Zm0 8h8c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Zm0-4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Z"
+                                fill-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </button>
+                <button  
+                    style="flex: 1; margin: 0 4px; width: auto;">
+                    <span  >
+                        <svg width="24" height="24" focusable="false">
+                            <path
+                                d="M5 5h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Zm3 4h8c.6 0 1 .4 1 1s-.4 1-1 1H8a1 1 0 1 1 0-2Zm0 8h8c.6 0 1 .4 1 1s-.4 1-1 1H8a1 1 0 0 1 0-2Zm-3-4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Z"
+                                fill-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </button>
+                <button 
+                    style="flex: 1; margin: 0 4px; width: auto;">
+                    <span class="tox-icon tox-tbtn__icon-wrap">
+                        <svg width="24" height="24" focusable="false">
+                            <path
+                                d="M5 5h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Zm6 4h8c.6 0 1 .4 1 1s-.4 1-1 1h-8a1 1 0 0 1 0-2Zm0 8h8c.6 0 1 .4 1 1s-.4 1-1 1h-8a1 1 0 0 1 0-2Zm-6-4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Z"
+                                fill-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </button>
+                <button  
+                    style="flex: 1; margin: 0 4px; width: auto;">
+                    <span class="tox-icon tox-tbtn__icon-wrap">
+                        <svg width="24" height="24" focusable="false">
+                            <path
+                                d="M5 5h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Zm0 4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Zm0 4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Zm0 4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Z"
+                                fill-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+            
+
+
+
+
+                        <div class="relative inline-block text-left group z-10 border-0 w-full  ">
+                            <div class="w-full flex rounded-md">
+                                <button type="button"
+                                    class="inline-flex justify-start border-none w-full rounded-md border shadow-sm text-sm font -medium"
+                                    id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                    <div   class="tox-split-button flex items-center" style="user-select: none;"
+                                    ><span ><span
+                                           c ><svg width="24" height="24" focusable="false">
+                                               <path
+                                                   d="M11 5h8c.6 0 1 .4 1 1s-.4 1-1 1h-8a1 1 0 0 1 0-2Zm0 6h8c.6 0 1 .4 1 1s-.4 1-1 1h-8a1 1 0 0 1 0-2Zm0 6h8c.6 0 1 .4 1 1s-.4 1-1 1h-8a1 1 0 0 1 0-2ZM4.5 6c0-.4.1-.8.4-1 .3-.4.7-.5 1.1-.5.4 0 .8.1 1 .4.4.3.5.7.5 1.1 0 .4-.1.8-.4 1-.3.4-.7.5-1.1.5-.4 0-.8-.1-1-.4-.4-.3-.5-.7-.5-1.1Zm0 6c0-.4.1-.8.4-1 .3-.4.7-.5 1.1-.5.4 0 .8.1 1 .4.4.3.5.7.5 1.1 0 .4-.1.8-.4 1-.3.4-.7.5-1.1.5-.4 0-.8-.1-1-.4-.4-.3-.5-.7-.5-1.1Zm0 6c0-.4.1-.8.4-1 .3-.4.7-.5 1.1-.5.4 0 .8.1 1 .4.4.3.5.7.5 1.1 0 .4-.1.8-.4 1-.3.4-.7.5-1.1.5-.4 0-.8-.1-1-.4-.4-.3-.5-.7-.5-1.1Z"
+                                                   fill-rule="evenodd"></path>
+                                           </svg></span></span><span role="presentation" class="tox-tbtn tox-split-button__chevron"
+                                       aria-disabled="false"><svg width="10" height="10" focusable="false">
+                                           <path
+                                               d="M8.7 2.2c.3-.3.8-.3 1 0 .4.4.4.9 0 1.2L5.7 7.8c-.3.3-.9.3-1.2 0L.2 3.4a.8.8 0 0 1 0-1.2c.3-.3.8-.3 1.1 0L5 6l3.7-3.8Z"
+                                               fill-rule="nonzero"></path>
+                                       </svg></span>
+                                    
+                                    </div>
+                                </button>
+                           
+                            </div>
+                            <div
+                                class="hidden absolute group-hover:block  mt-0  text-sm  rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        
+                                <div class="flex" role="none">
+
+                                    <div  onclick="insertUnorderedListAtCursor(3,'disc')">
+                                    <div >
+                                        <svg width="48" height="48" focusable="false">
+                                            <g fill-rule="evenodd">
+                                                <circle cx="11" cy="14" r="3"></circle>
+                                                <circle cx="11" cy="24" r="3"></circle>
+                                                <circle cx="11" cy="34" r="3"></circle>
+                                                <path opacity=".2" d="M18 12h22v4H18zM18 22h22v4H18zM18 32h22v4H18z">
+                                                </path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div  onclick="insertUnorderedListAtCursor(3,'circle')"> 
+                                    <div ><svg width="48" height="48"
+                                            focusable="false">
+                                            <g fill-rule="evenodd">
+                                                <path
+                                                    d="M11 16a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 1a3 3 0 1 1 0-6 3 3 0 0 1 0 6ZM11 26a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 1a3 3 0 1 1 0-6 3 3 0 0 1 0 6ZM11 36a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 1a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
+                                                    fill-rule="nonzero"></path>
+                                                <path opacity=".2" d="M18 12h22v4H18zM18 22h22v4H18zM18 32h22v4H18z">
+                                                </path>
+                                            </g>
+                                        </svg></div>
+                                </div>
+                                <div > 
+                                    <div class="" onclick="insertUnorderedListAtCursor()">
+                                        <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                            <rect width="48" height="48" fill="none"/>
+                                            <text x="12" y="14" font-family="Arial" font-size="14" fill="black">1</text>
+                                            <text x="12" y="24" font-family="Arial" font-size="14" fill="black">2</text>
+                                            <text x="12" y="34" font-family="Arial" font-size="14" fill="black">3</text>
+                                            <rect x="24" y="12" width="20" height="4" fill="black" opacity=".2"/>
+                                            <rect x="24" y="22" width="20" height="4" fill="black" opacity=".2"/>
+                                            <rect x="24" y="32" width="20" height="4" fill="black" opacity=".2"/>
+                                        </svg>
+                                        
+                                    </div>
+                                </div>
+                                <div  onclick="insertUnorderedListAtCursor(3,'upper-latin')"> 
+                                    <div class="text-sm" >
+                                        <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                            <text x="12" y="14" font-family="Arial" font-size="14" fill="black">A</text>
+                                            <text  x="12" y="24" font-family="Arial" font-size="14" fill="black">B</text>
+                                            <text x="12" y="34" font-family="Arial" font-size="14" fill="black">C</text>
+                                            <rect x="18" y="12" width="22" height="4" fill="black" opacity=".2"/>
+                                            <rect width="48" height="48" fill="none"/>
+                                            <!-- Number 2 Background -->
+                                            <rect x="18" y="22" width="22" height="4" fill="black" opacity=".2"/>
+                                            <!-- Number 3 Background -->
+                                            <rect x="18" y="32" width="22" height="4" fill="black" opacity=".2"/>
+                                        </svg>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                 
+        
+        
+                                    <!--  -->
+        
+        
+        
+        
+        
+                                </div>
+                                </div>
+                                </div>
+                            
+                               
+
+       
+
+        </div>
+<div class="" id="pom-texedito-container" style="width:100%;overflow-x: hidden;height: 37vh;overflow-y: auto;;">
+
+    <div class="p-6 " style="width: 1000px;" s>
+        
+        <div class="editor  mt-1  border-gray-300  " contenteditable="true" id="editor" s tyle="      margin: 9px 5px 6px 8px">
+            Start typing here...
+        </div>
+    </div>
+        </div>
+        <div class=' hideonprint flex' sty>
+
+            <div class="hover:bg-gray-200" onclick="insertNewLineAtCursor()">
+                <i class="fa fa-"></i><strong class="px-2">NEW LINE</strong>
+            </div>
+            <p>Cursor position: <span id="cursorPosition">0</span></p>
+         &nbsp;
+         &nbsp;
+         &nbsp;
+            <p>Text at cursor: <span id="textAtCursor"></span></p>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        const fullTextEditor = document.getElementById('fullTextEditor');
+        const pomtexeditocontainer = document.getElementById('pom-texedito-container');
+        const editor = document.getElementById('editor');
+        const toolbar = document.getElementById('toolbar');
+        const fullscreenButton = document.getElementById('fullscreenButton');
+        let savedRange = null;
+
+        function previewAndPrint(print=true) {
+          const printableContent = document.getElementById('pom-texedito-container').innerHTML;
+            const printWindow = window.open('', '', 'height=900,width=800');
+            
+            printWindow.document.write('<html><head><title>Print</title>');
+            printWindow.document.write('<style>body { font-family: Arial, sans-serif; }</style>'); // Add styles if needed
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(printableContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            
+            printWindow.focus();
+            if(print){
+
+              printWindow.print();
+              printWindow.close();
+            }
+        }
+
+        // document.getElementById('printButton').addEventListener('click', function () {
+            
+        // });
+
+
+        fullscreenButton.addEventListener('click', () => {
+          
+            fullTextEditor.style.cssText='background: white'
+            pomtexeditocontainer.style.cssText='width:100%;overflow-x: hidden;height: 37vh;overflow-y: auto;'
+            if (document.fullscreenElement) {
+                // Exit fullscreen  
+                document.exitFullscreen();
+
+            } else {
+                // Request fullscreen
+                fullTextEditor.style.cssText='background: #eee8df'
+                pomtexeditocontainer.style.cssText='height: 84vh;'
+                fullTextEditor.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enter fullscreen mode: ${err.message}`);
+                });
+            }
+        });
+
+
+       
+       async  function onChange(e) {
+        //  alert()
+    const files = e.target.files || e.dataTransfer.files;
+    console.log(files);
+
+    if (!files.length) {
+    //   dragging.value = false;
+      return;
+    }
+
+   
+    for (const key in files) {
+    if (files.hasOwnProperty(key)) {
+        const value = files[key];
+       const dd= await createFile(value); 
+       insertImageAtCursor(dd);
+       console.log(dd);
+    }
+}
+ 
+  }
+  function insertNewLineAtCursor (){
+    
+    const spaceAfter = document.createElement('div');
+    spaceAfter.textContent='NeW line '
+    editor.appendChild(spaceAfter); 
+    spaceAfter.focus()
+  }
+  function createFile(file) {
+    return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+}
+
+// giveBackResult((fileStore.value))
+  
+
+        function saveCursorPosition() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                savedRange = selection.getRangeAt(0).cloneRange();
+            }
+        }
+
+        function replaceSelectionWithHtml(newHtml) {
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = newHtml;
+            
+            // Remove the selected text and insert new HTML
+            range.deleteContents();
+            range.insertNode(tempDiv.firstChild);
+            
+            // Optionally, move the cursor after the new content
+            const newRange = document.createRange();
+            newRange.setStartAfter(tempDiv.firstChild);
+            newRange.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+        }
+        function insertElementAtCursor(elementType = 'strong', placeholderText = '*bold text here *',attributes=[]) {
+            if (savedRange) {
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(savedRange);
+                const range = selection.getRangeAt(0);
+                const   getThehighLighted=`${range.toString()}`.trim()
+               
+
+                if (typeof elementType === 'string' && elementType.trim() !== '') {
+                    // Create the element
+                    const elm = document.createElement(elementType);
+                    elm.style.paddingLeft = "7px";
+                    elm.contenteditable = false;
+
+                    // elm.style.cssText=attributes?.cssText??{}
+                    if(attributes){
+                    attributes.forEach(l => {
+                      const {attr,value,keyin}=l
+                      // if(keyin){
+                      //   elm[attr][keyin]=value
+                      // }else{
+                      //   // elm[attr]=value
+                      //   console.log(attr,value,l);
+                        
+                        
+                      // }
+                      elm.setAttribute(attr,value)
+
+                      
+                    });
+                  }
+                    elm.textContent = getThehighLighted.length > 0 ? getThehighLighted : placeholderText;
+
+                    const spaceBefore = document.createElement('span');
+                    const spaceAfter = document.createElement('span');
+                    spaceBefore.innerHTML = '&nbsp;&nbsp;';
+                    spaceAfter.innerHTML = '&nbsp;&nbsp;';
+
+
+                    savedRange.deleteContents();
+                    savedRange.insertNode(spaceBefore);
+                    savedRange.insertNode(elm);
+                    savedRange.insertNode(spaceAfter);
+
+                    const newRange = document.createRange();
+                    newRange.setStartAfter(spaceAfter);
+                    newRange.collapse(true);
+
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+
+                    savedRange = newRange.cloneRange();
+                    editor.focus();
+                } else {
+                    console.error('Invalid element type:', elementType);
+                }
+            } else {
+                console.log("No saved range available. Make sure the cursor position is saved before calling this function.");
+            }
+        }
+
+
+        function updateCursorInfo() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const cursorPosition = range.startOffset;
+                document.getElementById('cursorPosition').textContent = cursorPosition;
+
+                const textNode = range.startContainer;
+                if (textNode.nodeType === Node.TEXT_NODE) {
+                    const textAtCursor = textNode.textContent.substring(cursorPosition, cursorPosition + 1);
+                    document.getElementById('textAtCursor').textContent = textAtCursor;
+                } else {
+                    document.getElementById('textAtCursor').textContent = 'No text here';
+                }
+            }
+        }
+
+        function insertUnorderedListAtCursor(numRows = 2, liststyle = 'list-style') {
+          
+            if (savedRange) {
+                const selection = window.getSelection();
+                selection.removeAllRanges();  // Remove all existing selections
+                selection.addRange(savedRange);  // Restore the saved range
+
+                // Create a new table element
+                // const table = document.createElement('table');
+                const row = document.createElement('ul');
+                row.style.listStyle = liststyle;
+                row.style.paddingLeft = "73px";
+                for (let i = 0; i < numRows; i++) {
+                    // for (let j = 0; j < numCols; j++) {
+                    const cell = document.createElement('li');
+                    // cell.style.border = '1px solid black';
+                    cell.style.padding = '5px';
+                    cell.textContent = `li ${i + 1}, `; // Example text
+
+
+                    // Make cell position relative to position the resizer correctly
+                    cell.style.position = 'relative';
+
+                    row.appendChild(cell);
+                    // }
+                    // table.appendChild(row);
+                }
+
+                savedRange.deleteContents();
+                savedRange.insertNode(row);
+                const firstCell = row.querySelector('td');
+                const newRange = document.createRange();
+                newRange.setStart(firstCell, 0);
+                newRange.collapse(true);
+
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+
+                savedRange = newRange.cloneRange();
+
+                editor.focus();  // Focus the editor
+            }
+        }
+
+      
+
+        function initResize(e) {
+    e.preventDefault();
+    
+    const resizer = e.target;
+    const container = resizer.parentElement;
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startWidth = parseFloat(window.getComputedStyle(container).width);
+    const startHeight = parseFloat(window.getComputedStyle(container).height);
+
+    function onMouseMove(e) {
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        container.style.width = `${startWidth + dx}px`;
+        container.style.height = `${startHeight + dy}px`;
+        container.style.minWidth = '50px'; // Optional: Set a minimum width
+        container.style.minHeight = '50px'; // Optional: Set a minimum height
+
+        // Ensure the image inside the container adjusts with the new dimensions
+        const img = container.querySelector('img');
+        img.style.width = '100%';
+    }
+
+    function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+}
+
+function dragElement(container, idRaw) {
+    const dragHandle = document.createElement('div');
+    dragHandle.style.width = '20px'; // Width of the drag handle
+    dragHandle.style.height = '20px'; // Height of the drag handle
+    dragHandle.style.background = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent color for visibility
+    dragHandle.style.position = 'absolute';
+    dragHandle.style.left = '0';  
+    dragHandle.style.top = '0';
+    dragHandle.style.cursor = 'move';  
+    dragHandle.style.zIndex = '11';
+    dragHandle.classList.add(idRaw);
+    dragHandle.classList.add("hideonprint");
+
+    dragHandle.addEventListener('mousedown', (e) => {
+        draggedElement = container; // Set the dragged element
+        initDrag(e);
+    });
+    container.appendChild(dragHandle);
+}
+
+
+
+function insertImageAtCursor(src) {
+    if (savedRange) {
+        const selection = window.getSelection();
+        selection.removeAllRanges(); // Remove all existing selections
+        selection.addRange(savedRange); // Restore the saved range
+
+        const idRaw="Pom_Imge_EditorIn"+ Date.now()
+        const container = document.createElement('div');
+        container.style.display = 'inline-block'; // Ensures the container behaves correctly
+        container.style.position = 'relative'; // Allows positioning within the editor
+        container.style.width = '200px'; // Default width
+        container.style.height = '200px'; // Default height
+        container.classList.add(idRaw)
+        container.classList.add("hideOnprint")
+        container.id=(idRaw)
+        container.setAttribute('contenteditable',false)
+
+        // Create the image element
+        const img = document.createElement('img');
+        img.style.padding = '5px';
+        img.style.width = '100%'; // Ensure the image fits within the container
+        img.src = src;
+        img.style.display = 'block'; // Ensures the image behaves correctly within the container
+        img.classList.add(idRaw)
+        img.setAttribute('contenteditable',false)
+
+        
+        // Create a resize handle element
+        const resizer = document.createElement('div');
+        resizer.style.width = '20px'; // Width of the resize handle
+        resizer.style.height = '20px'; // Height of the resize handle
+        resizer.style.background = 'gray'; // Color of the resize handle
+        resizer.style.position = 'absolute';
+        resizer.style.right = '0';  
+        resizer.style.bottom = '0';
+        resizer.style.cursor = 'nwse-resize';  
+        resizer.style.zIndex = '10';
+        resizer.classList.add(idRaw)
+        resizer.setAttribute('contenteditable',false)
+        resizer.classList.add("hideOnprint")
+
+        resizer.addEventListener('mousedown', initResize);
+
+
+        // Append the image, resize handle, and drag handle to the container
+        container.appendChild(img);
+        container.appendChild(resizer);
+        dragElement(container,idRaw)
+        // container.appendChild(dragHandle);
+
+        // Replace the selected content with the new container
+        savedRange.deleteContents();
+        savedRange.insertNode(container);
+
+        // Create a new range to place the cursor after the inserted image
+        const newRange = document.createRange();
+        newRange.setStartAfter(img);
+        newRange.collapse(true);
+
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+
+        savedRange = newRange.cloneRange(); // Update savedRange to the new position
+
+        // Focus the editor (make sure `editor` is defined elsewhere in your code)
+        editor.focus();
+
+        
+        let tarclassImge= document.getElementsByClassName(idRaw);
+        console.log(tarclassImge,'idRawidRaw');
+        for (let imgesIndex = 0; imgesIndex < tarclassImge.length; imgesIndex++) {
+          const element = tarclassImge[imgesIndex];
+          console.log(element);
+          element.addEventListener("keyup",function (e) {
+            console.log(e);
+            if(e.keyCode==8){
+
+            }
+
+
+
+            
+            
+          })
+
+          
+        }
+
+        
+    }
+}
+function initDrag(e) {
+    e.preventDefault();
+
+    const dragHandle = e.target;
+    const container = dragHandle.parentElement;
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startLeft = parseFloat(window.getComputedStyle(container).left) || 0;
+    const startTop = parseFloat(window.getComputedStyle(container).top) || 0;
+
+    // A4 paper size in pixels for typical screen resolutions
+    const a4Width = 793.7; // width of A4 in pixels
+    const a4Height = 1122.52; // height of A4 in pixels
+
+    // Dimensions of the editor (if editor is an A4 container)
+    const editorBounds = editor.getBoundingClientRect();
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+
+    function onMouseMove(e) {
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        let newLeft = startLeft + dx;
+        let newTop = startTop + dy;
+
+        // Ensure the container stays within the A4 bounds horizontally
+        if (newLeft < 0) {
+            newLeft = 0;
+        } else if (newLeft  > 787) {
+        // } else if (newLeft + containerWidth > editor.width) {
+            newLeft = editor.width;
+            // newLeft = a4Width - containerWidth;
+        }
+
+        // Ensure the container stays within the A4 bounds vertically
+        if (newTop < 0) {
+            newTop = 0;
+        } else if (newTop + containerHeight > a4Height) {
+            newTop = a4Height - containerHeight;
+        }
+
+        container.style.left = `${newLeft}px`;
+        container.style.top = `${newTop}px`;
+        console.log({newTop,newLeft});
+    }
+
+    function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+}
+
+
+
+function insertTableAtCursor(numRows = 2, numCols = 2) {
+    if (savedRange) {
+        const selection = window.getSelection();
+        selection.removeAllRanges();  // Remove all existing selections
+        selection.addRange(savedRange);  // Restore the saved range
+
+        // Create a new table element
+        const container = document.createElement('div');
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+        table.style.borderCollapse = 'collapse';
+        
+        table.style.border = '1px solid black';
+        table.style.borderCollapse = 'collapse';
+        table.classList.add('pom-table-editor');
+        container.classList.add('pom-table-editor-container');
+        container.style.display = 'flex';
+
+        // Dynamically create rows and columns
+        for (let i = 0; i < numRows; i++) {
+            const row = document.createElement('tr');
+            for (let j = 0; j < numCols; j++) {
+                const cell = document.createElement('td');
+                cell.style.border = '1px solid black';
+                cell.style.padding = '5px';
+                cell.textContent = `Row ${i + 1}, Cell ${j + 1}`; // Example text
+
+                // Add a resizer to the cell
+                const resizer = document.createElement('div');
+                resizer.style.width = '5px';
+                resizer.style.height = '100%';
+                resizer.style.position = 'absolute';
+                resizer.style.right = '0';
+                resizer.style.top = '0';
+                resizer.style.cursor = 'col-resize';
+                resizer.style.userSelect = 'none';
+                resizer.addEventListener('mousedown', initResize);
+
+                // Make cell position relative to position the resizer correctly
+                cell.style.position = 'relative';
+
+                // Append the resizer to the cell
+                cell.appendChild(resizer);
+                row.appendChild(cell);
+            }
+            table.appendChild(row);
+            container.appendChild(table);
+
+        }
+
+
+
+        table.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+
+            // Remove any existing context menu
+            const existingMenu = document.getElementById('custom-context-menu');
+            if (existingMenu) {
+                document.body.removeChild(existingMenu);
+            }
+
+            // Create the custom context menu
+            const contextMenu = document.createElement('div');
+            contextMenu.id = 'custom-context-menu';
+            contextMenu.style.position = 'absolute';
+            contextMenu.style.backgroundColor = 'white';
+            contextMenu.style.border = '1px solid #ccc';
+            contextMenu.style.padding = '10px';
+            contextMenu.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+            contextMenu.style.zIndex = '1000';
+
+            // Position the menu at the mouse position
+            contextMenu.style.left = `${e.pageX}px`;
+            contextMenu.style.top = `${e.pageY}px`;
+
+            // Menu Option: Delete Table
+            const deleteTableOption = document.createElement('div');
+            deleteTableOption.textContent = 'Delete Table';
+            deleteTableOption.style.cursor = 'pointer';
+            deleteTableOption.addEventListener('click', function() {
+                container.remove();
+                document.body.removeChild(contextMenu);
+            });
+
+            // Menu Option: Toggle Borders
+            const toggleBordersOption = document.createElement('div');
+            toggleBordersOption.textContent = 'Toggle Borders';
+            toggleBordersOption.style.cursor = 'pointer';
+            toggleBordersOption.addEventListener('click', function() {
+                const hasBorder = table.style.border !== '';
+                table.style.border = hasBorder ? '' : '1px solid black';
+                table.style.borderCollapse = 'collapse';
+                table.querySelectorAll('td').forEach(td => {
+                    td.style.border = hasBorder ? '' : '1px solid black';
+                });
+                document.body.removeChild(contextMenu);
+            });
+
+            // Menu Option: Color Table Background and Text
+            const colorTableOption = document.createElement('div');
+            colorTableOption.textContent = 'Color Table';
+            colorTableOption.style.cursor = 'pointer';
+
+            // Create a color input for background color
+            const bgColorInput = document.createElement('input');
+            bgColorInput.type = 'color';
+            bgColorInput.id = 'bgColorInput';
+            bgColorInput.style.cursor = 'pointer';
+            bgColorInput.style.marginTop = '5px';
+            bgColorInput.style.display = 'block';
+            bgColorInput.addEventListener('input', function() {
+                table.style.backgroundColor = bgColorInput.value;
+            });
+
+            // Create a color input for text color
+            const textColorInput = document.createElement('input');
+            textColorInput.type = 'color';
+            textColorInput.id = 'textColorInput';
+            textColorInput.style.cursor = 'pointer';
+            textColorInput.style.marginTop = '5px';
+            textColorInput.style.display = 'block';
+            textColorInput.addEventListener('input', function() {
+                table.style.color = textColorInput.value;
+            });
+
+            // Add labels for color inputs
+            const bgColorLabel = document.createElement('label');
+            bgColorLabel.textContent = 'Background Color';
+            bgColorLabel.setAttribute('for', 'bgColorInput');
+
+            const textColorLabel = document.createElement('label');
+            textColorLabel.textContent = 'Text Color';
+            textColorLabel.setAttribute('for', 'textColorInput');
+
+            // Append color inputs and labels to the colorTableOption
+            colorTableOption.appendChild(bgColorLabel);
+            colorTableOption.appendChild(bgColorInput);
+            colorTableOption.appendChild(textColorLabel);
+            colorTableOption.appendChild(textColorInput);
+
+            // Menu Option: Add Row
+            const addRowOption = document.createElement('div');
+            addRowOption.textContent = 'Add Row';
+            addRowOption.style.cursor = 'pointer';
+            addRowOption.addEventListener('click', function() {
+                const newRow = document.createElement('tr');
+                const numCols = table.rows[0].cells.length;
+                for (let j = 0; j < numCols; j++) {
+                    const newCell = document.createElement('td');
+                    newCell.style.border = '1px solid black';
+                    newCell.style.padding = '5px';
+                    newCell.textContent = `Row ${table.rows.length + 1}, Cell ${j + 1}`;
+                    newRow.appendChild(newCell);
+                }
+                table.appendChild(newRow);
+                document.body.removeChild(contextMenu);
+            });
+
+            // Menu Option: Add Column
+            const addColOption = document.createElement('div');
+            addColOption.textContent = 'Add Column';
+            addColOption.style.cursor = 'pointer';
+            addColOption.addEventListener('click', function() {
+                for (let i = 0; i < table.rows.length; i++) {
+                    const newCell = document.createElement('td');
+                    newCell.style.border = '1px solid black';
+                    newCell.style.padding = '5px';
+                    newCell.textContent = `Row ${i + 1}, Cell ${table.rows[i].cells.length + 1}`;
+                    table.rows[i].appendChild(newCell);
+                }
+                document.body.removeChild(contextMenu);
+            });
+
+            // Append all options to the context menu
+            contextMenu.appendChild(deleteTableOption);
+            contextMenu.appendChild(toggleBordersOption);
+            contextMenu.appendChild(colorTableOption);
+            contextMenu.appendChild(addRowOption);
+            contextMenu.appendChild(addColOption);
+
+            // Append the context menu to the body
+            document.body.appendChild(contextMenu);
+
+            // Remove the context menu when clicking elsewhere
+            document.addEventListener('click', function removeMenu() {
+                if (contextMenu) {
+                    document.body.removeChild(contextMenu);
+                }
+                document.removeEventListener('click', removeMenu);
+            });
+        });
+
+        savedRange.deleteContents();
+        savedRange.insertNode(container);
+        const firstCell = table.querySelector('td');
+        const newRange = document.createRange();
+        newRange.setStart(firstCell, 0);
+        newRange.collapse(true);
+
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+
+        savedRange = newRange.cloneRange();
+
+        editor.focus();  // Focus the editor
+    }
+}
+
+
+
+
+
+ 
+
+
+
+        document.getElementById('editor').addEventListener('keyup', () => {
+            saveCursorPosition();
+            updateCursorInfo();
+        });
+        document.getElementById('editor').addEventListener('mouseup', () => {
+            saveCursorPosition();
+            updateCursorInfo();
+        });
+
+
+
+        const headers = document.getElementById('headers');
+        const fontSizes = document.getElementById('fontSizes');
+
+        // Loop to create and append options
+        for (let i = 1; i <= 130; i++) {
+            // Create options for headers
+            if (i <= 6) {
+                const fonts = { 1: "2em", 2: "1.5em", 3: "1.15em", 4: "1.5em", 5: "0.83em", 6: "0.67em", }
+                const option = document.createElement('option');
+                option.value = `h${i}`;
+                option.textContent = `h${i}`;
+                option.setAttribute('data-set', JSON.stringify({ "font-size": fonts[i] }))
+                headers.appendChild(option);
+            }
+
+            // Create options for font sizes
+            const option2 = document.createElement('option');
+            option2.value = `${i}px`;
+            option2.setAttribute('data-set', JSON.stringify({ "font-size": option2.value }))
+            // option2.textContent = `${i}`;
+            fontSizes.appendChild(option2);
+        }
+
+        const tablePickerGrid = document.getElementById('table-picker-grid');
+        const tableDimensions = document.getElementById('table-dimensions');
+
+        // Dynamically create a 10x10 grid
+        for (let i = 0; i < 100; i++) {
+            const gridItem = document.createElement('div');
+            gridItem.addEventListener('mouseover', handleMouseOver);
+            gridItem.addEventListener('click', handleMouseClick);
+            tablePickerGrid.appendChild(gridItem);
+        }
+
+        function handleMouseOver(event) {
+            const index = Array.from(tablePickerGrid.children).indexOf(event.target);
+            const columns = (index % 10) + 1;
+            const rows = Math.floor(index / 10) + 1;
+
+            // Highlight the selected grid
+            Array.from(tablePickerGrid.children).forEach((item, i) => {
+                if (i <= index) {
+                    item.style.backgroundColor = '#b0e0e6';
+                } else {
+                    item.style.backgroundColor = '#fff';
+                }
+            });
+
+            // Update the dimensions display
+            tableDimensions.textContent = `${columns} x ${rows}`;
+        }
+
+        function handleMouseClick() {
+            const [columns, rows] = tableDimensions.textContent.split(' x ').map(Number);
+            insertTableAtCursor(rows, columns);
+        }
+
+
+    
+        function openInputToFeed(e,element='span',type='datetime-local',cssStyle={},attributes=[]) {
+          const cleanzefirst = document.getElementById('Pom-openInputToFeed'+type);
+          if(cleanzefirst)
+             cleanzefirst.remove()
+    
+          
+    const div = document.createElement('div');
+    
+    // Create a new input element
+    const dateInput = document.createElement('input');
+    
+    // Set attributes and styles for the div
+    div.id = 'custom-context-menu';
+    div.style.position = 'absolute';
+    div.style.backgroundColor = 'white';
+    div.style.border = '1px solid #ccc';
+    div.style.padding = '10px';
+    div.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+    div.style.zIndex = '1000';
+    
+    // Position the menu at the mouse position
+    div.style.left = `${e.pageX}px`;
+    div.style.top = `${e.pageY}px`;
+    
+    // Set attributes for the datetime input
+    dateInput.id = 'Pom-openInputToFeed'+type;
+    dateInput.classList.add('Pom-openInputToFeed') ;
+    dateInput.type = type;
+    dateInput.style.cssText = cssStyle;
+    
+    div.appendChild(dateInput);
+    
+    // Ensure the toolbar element exists before appending
+    const toolbar = document.getElementById('toolbar');
+    if (toolbar) {
+        toolbar.appendChild(div);
+    }
+    
+  
+    dateInput.addEventListener('change', function() {
+      const inputValue=`${this.value}`;
+      if(type=='datetime-local')
+        insertElementAtCursor(element, inputValue.replace(/T/, ' '));
+       else{
+
+        let attrV = [];
+
+for (const key in attributes) {
+  if (attributes.hasOwnProperty(key)) {
+    if (key.toLowerCase() === 'href') {
+      attrV.push({ attr: key, value: inputValue });
+    } else {
+      const v = attributes[key];
+      // if(key=='cssText'){
+        
+      //   attrV.push({ attr: 'style',value: "    text-decoration: underline;    cursor: pointer;",keyin:'cssText' });
+
+      // }else{
+      // }
+      attrV.push({ attr: key, value: v });
+    }
+  }
+}
+
+  insertElementAtCursor(element,'**link Name** ',attrV);
+
+
+      }
+
+        div.remove();
+        window.document.removeEventListener('click', handleDocumentClick);
+         document.getElementById('pom-editor-anchor-tag').addEventListener("click",clickLink)
+
+    });
+    
+    // Handle document click to remove the menu
+    function handleDocumentClick(event) {
+        if (!div.contains(event.target)) {
+            div.remove();
+            window.document.removeEventListener('click', handleDocumentClick);
+        }
+    }
+
+    function clickLink(){
+      event.preventDefault(); 
+      
+      const href = this.href;
+      window.open(href, '_blank')
+      window.document.removeEventListener('click', clickLink);
+
+    }
+    
+    // document.getElementById('pom-editor-anchor-tag').addEventListener("click",clickLink)
+}
+
+function removeAllTables() { 
+    let tables = document.getElementsByClassName('pom-table-editor-container'); 
+    tables = Array.from(tables); 
+    tables.forEach(table => table.remove());
+}
+function styleElementIncluder(style, values,textT='', elementType = 'span') {
+    // Check if there is a saved range
+    if (savedRange) {
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(savedRange);
+        const range = selection.getRangeAt(0);
+        const highlightedText = range.toString().trim();
+
+        if (typeof elementType === 'string' && elementType.trim() !== '') {
+            // Create the element
+            const elm = document.createElement(elementType);
+            const regex = new RegExp(textT, 'ig');
+            elm.style[style] = values.replace(regex, '') + textT;
+            console.log(style, values);
+            elm.textContent = highlightedText.length > 0 ? highlightedText : 'text here';
+
+            // Create space elements for spacing
+            const spaceBefore = document.createElement('span');
+            const spaceAfter = document.createElement('span');
+            spaceBefore.innerHTML = '&nbsp;&nbsp;';
+            spaceAfter.innerHTML = '&nbsp;&nbsp;';
+
+            // Replace the selected text with styled element
+            savedRange.deleteContents();
+            savedRange.insertNode(spaceBefore);
+            savedRange.insertNode(elm);
+            savedRange.insertNode(spaceAfter);
+
+            // Adjust the range to position the cursor after the styled element
+            const newRange = document.createRange();
+            newRange.setStartAfter(spaceAfter);
+            newRange.collapse(true);
+
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+
+            // Update savedRange
+            savedRange = newRange.cloneRange();
+            editor.focus();
+        } else {
+            console.error('Invalid element type:', elementType);
+        }
+    } else {
+        console.log("No saved range available. Make sure the cursor position is saved before calling this function.");
+    }
+}
+
+
+
+    </script>
+    <style>
+        .table-picker-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .table-picker-trigger {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .table-picker-container {
+            position: absolute;
+            top: 10%;
+            right: 90;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            user-select: none;
+            width: max-content;
+            display: none;
+            left: 85% !important;
+            top: -7px;
+            /* Hidden by default */
+        }
+
+        .table-picker-container.hidden {
+            /* display: none; */
+        }
+
+        .table-picker-wrapper:hover .table-picker-container {
+            display: block;
+            /* Show on hover */
+        }
+
+        .table-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 20px);
+            grid-template-rows: repeat(10, 20px);
+            gap: 2px;
+            margin-bottom: 10px;
+        }
+
+        .table-picker-grid div {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        .table-picker-grid div:hover {
+            background-color: #b0e0e6;
+        }
+
+        .table-dimensions {
+            font-size: 12px;
+            color: #333;
+        }
+
+        .pomXEditor {
+            border: 1px;
+            border-style: solid;
+            border-color: #6972734e;
+            
+        }
+        #editor:focus {
+    outline: none;
+    border: none; /* Removes any custom borders if applied */
+}
+.pom-table-editor-container{
+    display: flex;
+}
+
+a {
+  color: blue;           /* Default color of the link text */
+  text-decoration: underline; /* Underline the link text by default */
+  cursor: pointer;       /* Cursor changes to a pointer on hover */
+}
+
+/* Additional pseudo-classes for different link states */
+a:link {
+  color: blue;           /* Color of unvisited link */
+}
+
+a:visited {
+  color: purple;         /* Color of visited link */
+}
+
+a:hover {
+  color: red;            /* Color when the link is hovered over */
+  text-decoration: none; /* Typically remove underline on hover */
+}
+
+a:active {
+  color: orange;         /* Color when the link is clicked */
+}
+
+
+
+
+@media print {
+  .print-container {
+    /* width: 100%;
+    height: auto;
+    overflow: hidden;
+    page-break-inside: avoid;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; */
+  }
+
+  /* Optional: Set the font size for better print readability */
+  /* body {
+    font-size: 12pt;
+  } */
+
+  /* Optional: Ensure images or other elements fit within the print area */
+  /* img {
+    max-width: 100%;
+    height: auto;
+  } */
+  .hideonprint{
+    display: none !important;
+
+  }
+  * {
+    overflow: hidden; /* Hide scrollbar */
+  }
+}
+
+    </style>
+</body>
+
+</html>
