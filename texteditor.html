@@ -251,8 +251,10 @@ https://github.com/browserslist/browserslist#readme
                                 <div class=" text-center w-full   py-1 bg-gray-100 font-bold">Table</div>
                               
                                 <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer" onclick="removeAllTables()">
-                                    <i class="fa fa-1x fa-trash-can px-2"></i><span class="px-3">Delete All
-                                        table</span>
+                                    <i class="fa fa-1x fa-trash-can px-2"></i><span class="px-3">Delete All Permanetlytable</span>
+                                </div>
+                                <div class="hover:bg-gray-200 elemeSet rounded cursor-pointer" onclick="removeAllTables(true)">
+                                    <i class="fa fa-1x fa-eye-slash px-2"></i><span class="px-3">Hide/Show All </span>
                                 </div>
 
 
@@ -1291,10 +1293,19 @@ for (const key in attributes) {
     // document.getElementById('pom-editor-anchor-tag').addEventListener("click",clickLink)
 }
 
-function removeAllTables() { 
+function removeAllTables(hide=false) { 
     let tables = document.getElementsByClassName('pom-table-editor-container'); 
     tables = Array.from(tables); 
-    tables.forEach(table => table.remove());
+    tables.forEach(table => {
+    if(hide){
+        const display=table.style.display === 'flex'?'none':'flex';
+        console.log(table.style.display=='flex',display);
+    table.style.display=display
+   return
+    }
+
+    table.remove()
+    });
 }
 function styleElementIncluder(style, values,textT='', elementType = 'span') {
     // Check if there is a saved range
